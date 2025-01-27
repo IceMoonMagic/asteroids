@@ -16,6 +16,10 @@ def main():
     clock = pygame.time.Clock()
     delta: float = 0
 
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    Player.containers = (updatable, drawable)
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     # Main Loop
@@ -26,10 +30,13 @@ def main():
                 return
 
         # Process
+        for _updatable in updatable:
+            updatable.update(delta)
 
         # Draw Frame
         screen.fill((0, 0, 0))
-        player.draw(screen)
+        for _drawable in drawable:
+            _drawable.draw(screen)
 
         pygame.display.flip()
 
