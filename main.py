@@ -1,5 +1,7 @@
 import pygame
 
+from asteroid import Asteroid
+from astroidfield import AsteroidField
 from constants import *
 from player import Player
 
@@ -16,11 +18,16 @@ def main():
     clock = pygame.time.Clock()
     delta: float = 0
 
-    updatable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+    updatable = pygame.sprite.Group()
 
     Player.containers = (updatable, drawable)
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable,)
+    field = AsteroidField()
 
     # Main Loop
     while True:
@@ -31,7 +38,12 @@ def main():
 
         # Process
         for _updatable in updatable:
-            updatable.update(delta)
+            _updatable.update(delta)
+
+        for astroid in asteroids:
+            if astroid.is_colliding(player):
+                print("Game Over!")
+                exit(0)
 
         # Draw Frame
         screen.fill((0, 0, 0))
@@ -43,6 +55,8 @@ def main():
         # Limit Frame Rate
         delta = clock.tick(60) / 1000
 
+
+d
 
 if __name__ == "__main__":
     main()
