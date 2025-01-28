@@ -4,6 +4,7 @@ from asteroid import Asteroid
 from astroidfield import AsteroidField
 from constants import *
 from player import Player
+from shot import Shot
 
 
 def main():
@@ -20,6 +21,7 @@ def main():
 
     asteroids = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
     updatable = pygame.sprite.Group()
 
     Player.containers = (updatable, drawable)
@@ -28,6 +30,8 @@ def main():
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = (updatable,)
     field = AsteroidField()
+
+    Shot.containers = (updatable, drawable, shots)
 
     # Main Loop
     while True:
@@ -44,6 +48,10 @@ def main():
             if astroid.is_colliding(player):
                 print("Game Over!")
                 exit(0)
+            for shot in shots:
+                if astroid.is_colliding(shot):
+                    shot.kill()
+                    astroid.split()
 
         # Draw Frame
         screen.fill((0, 0, 0))
@@ -55,8 +63,6 @@ def main():
         # Limit Frame Rate
         delta = clock.tick(60) / 1000
 
-
-d
 
 if __name__ == "__main__":
     main()
