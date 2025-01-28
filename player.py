@@ -12,33 +12,12 @@ from shot import Shot
 
 
 class Player(CircleShape):
-    def __init__(self, x, y):
-        super().__init__(x, y, PLAYER_RADIUS)
-        self.rotation = 0
-        self.shoot_cooldown = 0
+    def __init__(self, position: pygame.Vector2):
+        super().__init__(position, PLAYER_RADIUS)
+        self.rotation: float = 0
+        self.shoot_cooldown: float = 0
 
-    # in the player class
-    def triangle(self):
-        forward = pygame.Vector2(0, 1).rotate(self.rotation)
-        right = (
-            pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.5
-        )
-        a = self.position + forward * self.radius
-        b = self.position - forward * self.radius - right
-        c = self.position - forward * self.radius + right
-        return [a, b, c]
-
-    def draw(self, screen):
-        pygame.draw.polygon(screen, "white", self.triangle(), 2)
-
-    def move(self, delta: float):
-        forward = pygame.Vector2(0, 1).rotate(self.rotation)
-        self.position += forward * PLAYER_SPEED * delta
-
-    def rotate(self, delta: float):
-        self.rotation += PLAYER_TURN_SPEED * delta
-
-    def update(self, delta: float):
+    def frame_process(self, delta: float):
         self.shoot_cooldown = max(self.shoot_cooldown - delta, 0)
         keys: pygame.key.ScancodeWrapper = pygame.key.get_pressed()
 
@@ -54,7 +33,27 @@ class Player(CircleShape):
             self.shoot_cooldown = PLAYER_SHOOT_COOLDOWN
             self.shoot()
 
+    def frame_draw(self, screen: pygame.Surface):
+        pygame.draw.polygon(screen, "white", self.triangle(), 2)
+
+    def move(self, delta: float):
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        self.position += forward * PLAYER_SPEED * delta
+
+    def rotate(self, delta: float):
+        self.rotation += PLAYER_TURN_SPEED * delta
+
     def shoot(self):
-        shot = Shot(self.position.x, self.position.y)
+        shot = Shot(self.position.copy())
         shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation)
         shot.velocity *= PLAYER_SHOOT_SPEED
+
+    def triangle(self):
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        right = (
+            pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.5
+        )
+        a = self.position + forward * self.radius
+        b = self.position - forward * self.radius - right
+        c = self.position - forward * self.radius + right
+        return [a, b, c]

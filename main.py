@@ -1,7 +1,10 @@
+from typing import cast
+
 import pygame
 
 from asteroid import Asteroid
 from astroidfield import AsteroidField
+from circleshape import CircleShape
 from constants import *
 from player import Player
 from shot import Shot
@@ -20,18 +23,18 @@ def main():
     delta: float = 0
 
     asteroids = pygame.sprite.Group()
-    drawable = pygame.sprite.Group()
     shots = pygame.sprite.Group()
-    updatable = pygame.sprite.Group()
+    do_frame_process = pygame.sprite.Group()
+    do_frame_draw = pygame.sprite.Group()
 
-    Player.containers = (updatable, drawable)
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    Player.containers = (do_frame_process, do_frame_draw)
+    player = Player(pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
 
-    Asteroid.containers = (asteroids, updatable, drawable)
-    AsteroidField.containers = (updatable,)
+    Asteroid.containers = (asteroids, do_frame_process, do_frame_draw)
+    AsteroidField.containers = (do_frame_process,)
     field = AsteroidField()
 
-    Shot.containers = (updatable, drawable, shots)
+    Shot.containers = (do_frame_process, do_frame_draw, shots)
 
     # Main Loop
     while True:
@@ -41,22 +44,25 @@ def main():
                 return
 
         # Process
-        for _updatable in updatable:
-            _updatable.update(delta)
+        for to_process in do_frame_process:
+            to_process.frame_process(delta)
 
-        for astroid in asteroids:
-            if astroid.is_colliding(player):
+        for asteroid in asteroids:
+            cast(asteroid, Asteroid)
+            if asteroid.is_colliding(player):
                 print("Game Over!")
                 exit(0)
             for shot in shots:
-                if astroid.is_colliding(shot):
+                cast(shot, Shot)
+                if asteroid.is_colliding(shot):
                     shot.kill()
-                    astroid.split()
+                    asteroid.split()
 
         # Draw Frame
         screen.fill((0, 0, 0))
-        for _drawable in drawable:
-            _drawable.draw(screen)
+        for to_draw in do_frame_draw:
+            cast(to_draw, CircleShape)
+            to_draw.frame_draw(screen)
 
         pygame.display.flip()
 

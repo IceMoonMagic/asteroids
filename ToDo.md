@@ -1,0 +1,21 @@
+- ~~Refactor with Type Hints and basically [GDScript code order](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html#code-order) (where applicable)~~
+- Replace hardcoded controls
+  - Add secondary key (e.g. arrows)
+  - Add config file
+  - Support key location instead of character (like godot)
+    - If simple
+- Add acceleration / deceleration to the player movement
+- Make the objects wrap around the screen instead of disappearing
+- Make the asteroids lumpy instead of perfectly round
+- Make the ship have a triangular hit box instead of a circular one
+  - See `pygame.mask`
+- Implement multiple lives and respawning
+- Add a shield power-up
+- Add a speed power-up
+- Add a scoring system
+- Add an explosion effect for the asteroids
+- Add enemy ships
+  - don't clip asteroids
+- Add a background image
+- Create different weapon types
+- Add bombs that can be dropped
