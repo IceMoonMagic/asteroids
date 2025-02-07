@@ -2,6 +2,7 @@ import pygame
 
 from circleshape import CircleShape
 from constants import (
+    InputMap,
     PLAYER_RADIUS,
     PLAYER_SHOOT_COOLDOWN,
     PLAYER_SHOOT_SPEED,
@@ -21,15 +22,15 @@ class Player(CircleShape):
         self.shoot_cooldown = max(self.shoot_cooldown - delta, 0)
         keys: pygame.key.ScancodeWrapper = pygame.key.get_pressed()
 
-        if keys[pygame.K_w]:
+        if InputMap.is_forward(keys):
             self.move(delta)
-        if keys[pygame.K_s]:
+        if InputMap.is_backward(keys):
             self.move(-delta)
-        if keys[pygame.K_a]:
+        if InputMap.is_left(keys):
             self.rotate(-delta)
-        if keys[pygame.K_d]:
+        if InputMap.is_right(keys):
             self.rotate(delta)
-        if keys[pygame.K_SPACE] and self.shoot_cooldown <= 0:
+        if InputMap.is_shoot(keys) and self.shoot_cooldown <= 0:
             self.shoot_cooldown = PLAYER_SHOOT_COOLDOWN
             self.shoot()
 

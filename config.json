@@ -1,0 +1,21 @@
+{
+  "forward": [
+    "K_w",
+    "K_UP"
+  ],
+  "backward": [
+    "K_s",
+    "K_DOWN"
+  ],
+  "left": [
+    "K_a",
+    "K_LEFT"
+  ],
+  "right": [
+    "K_d",
+    "K_RIGHT"
+  ],
+  "shoot": [
+    "K_SPACE"
+  ]
+}

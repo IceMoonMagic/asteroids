@@ -1,7 +1,7 @@
 - ~~Refactor with Type Hints and basically [GDScript code order](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html#code-order) (where applicable)~~
-- Replace hardcoded controls
-  - Add secondary key (e.g. arrows)
-  - Add config file
+- ~~Replace hardcoded controls~~
+  - ~~Add secondary key (e.g. arrows)~~
+  - ~~Add config file~~
   - Support key location instead of character (like godot)
     - If simple
 - Add acceleration / deceleration to the player movement
